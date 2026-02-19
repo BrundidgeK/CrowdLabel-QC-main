@@ -24,4 +24,16 @@ class TagReportOutput:
         "num_no"
         ]
 
-        
+        with open(output_path, "w", newline="") as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(headers)
+
+            # Sort for consistent output
+            for key in sorted(grouped_assignments.keys()):
+                comment_id, characteristic_id = key
+                tag_list = grouped_assignments[key]
+
+                num_taggers_asked = len(tag_list)
+                num_yes, num_no = count_yes_no(tag_list)
+
+                num_failed = num_taggers_asked - (num_yes + num_no)
