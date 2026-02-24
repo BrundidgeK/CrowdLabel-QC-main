@@ -1,8 +1,11 @@
 """Integration tests for tag report output as CSV"""
+import sys
 import os
 
-from src.qcc.io.csv_adapter import read_assignments
-from src.qcc.reports.tag_reports.tag_report_output import TagReportOutput
+sys.path.append(os.path.abspath("src"))
+
+from qcc.io.csv_adapter import read_assignments
+from qcc.reports.tag_reports.tag_report_output import TagReportOutput
 
 class TestTagReportOutput:
 
@@ -12,7 +15,7 @@ class TestTagReportOutput:
         pass
 
 
-    def test():
+    def test(self):
         csv_input = "tests/data/min.csv"
         csv_output = "/tests/data/tag_report_output.csv"
 
