@@ -3,7 +3,7 @@
 import csv 
 from typing import List
 
-from reports.tagger_reports.tag_report import group_by_comment_and_characteristic, count_yes_no
+from qcc.reports.tagger_reports.tag_report import group_by_comment_and_characteristic, count_yes_no
 from qcc.domain.tagassignment import TagAssignment
 
 class TagReportOutput:
@@ -44,3 +44,11 @@ class TagReportOutput:
                 num_yes, num_no = count_yes_no(tag_list)
 
                 num_failed = num_taggers_asked - (num_yes + num_no)
+
+                writer.writerow([
+                    comment_id, 
+                    characteristic_id, 
+                    num_taggers_asked, 
+                    num_yes, 
+                    num_no
+                ])

@@ -1,0 +1,4 @@
+comment_id,characteristic_id,num_taggers_asked,num_yes,num_no
+comment1,sentiment,2,2,0
+comment2,sentiment,2,0,2
+comment3,toxicity,2,0,2
