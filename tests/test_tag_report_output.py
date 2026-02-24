@@ -1,8 +1,8 @@
 """Integration tests for tag report output as CSV"""
-
+import os
 
 from src.qcc.io.csv_adapter import read_assignments
-from src.qcc.reports.tag_reports.tag_report_output import write_to_csv
+from src.qcc.reports.tag_reports.tag_report_output import TagReportOutput
 
 class TestTagReportOutput:
 
