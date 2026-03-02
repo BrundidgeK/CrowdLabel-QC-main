@@ -8,6 +8,7 @@ from qcc.domain.tagassignment import TagAssignment
 from qcc.data_ingestion.mysql_config import MySQLConfig
 from qcc.data_ingestion.mysql_importer import TableImporter
 from src.qcc.io.db_adapter import DBAdapter
+from qcc.metrics.agreement_strategy import LatestLabelPercentAgreement
 
 class TagReportOutput:
 
@@ -35,7 +36,7 @@ class TagReportOutput:
                      ):
         
         grouped_assignments = group_by_comment_and_characteristic(assignments)
-        
+        label = LatestLabelPercentAgreement()
 
         headers = [
         "comment_id", 
@@ -49,7 +50,6 @@ class TagReportOutput:
         ]
 
         # Cohen's kappa + Krippendorff's alpha
-        from qcc.metrics.agreement_strategy import cohen_kappa, krippendorff_alpha
 
         with open(output_path, "w", newline="") as csvfile:
             writer = csv.writer(csvfile)
@@ -65,8 +65,8 @@ class TagReportOutput:
 
                 num_failed = num_taggers_asked - (num_yes + num_no)
 
-                kappa = cohen_kappa(tag_list)
-                alpha = krippendorff_alpha(tag_list)
+                kappa = label.cohens_kappa(tag_list, characteristic=characteristic_id)
+                alpha = label.krippendorff_alpha(tag_list, char=characteristic_id)
                 
                 writer.writerow([
                     comment_id, 
