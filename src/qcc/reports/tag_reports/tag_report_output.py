@@ -28,6 +28,8 @@ class TagReportOutput:
         "num_no"
         ]
 
+        # Cohen's kappa + Krippendorff's alpha
+
         # Metrics will be added in the future
 
         # Opens path and creates the CSV file
