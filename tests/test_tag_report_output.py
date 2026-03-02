@@ -19,6 +19,7 @@ class TestTagReportOutput:
         report = TagReportOutput()
         report.write_to_csv(tags, csv_output)
 
+
     def test_db_input(self):
         db_output = "/tests/data/tag_report_output.csv"
 

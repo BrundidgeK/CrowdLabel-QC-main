@@ -18,9 +18,9 @@ class TagReportOutput:
         
         """Generates a CSV file from the SQL database of Tag Assignments"""
 
-        config = MySQLConfig(host="localhost", user="root", password="password", database="tag_prompt_db")
+        config = MySQLConfig(host="localhost", user="root", password="password", database="expertiza_anonymization", port=3306)
         importer = TableImporter(config)
-        db = DBAdapter(config, importer)
+        db = DBAdapter(mysql_config=config, importer=importer)
         assignments = db.read_assignments()
 
         # Get informatino from databased here
