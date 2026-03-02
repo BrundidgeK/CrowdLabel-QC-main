@@ -5,8 +5,28 @@ from typing import List
 
 from qcc.reports.tagger_reports.tag_report import group_by_comment_and_characteristic, count_yes_no
 from qcc.domain.tagassignment import TagAssignment
+from qcc.data_ingestion.mysql_config import MySQLConfig
+from qcc.data_ingestion.mysql_importer import TableImporter
+from src.qcc.io.db_adapter import DBAdapter
 
 class TagReportOutput:
+
+    def db_to_csv(
+        self,
+        output_path : str
+                     ):
+        
+        """Generates a CSV file from the SQL database of Tag Assignments"""
+
+        config = MySQLConfig(host="localhost", user="root", password="password", database="tag_prompt_db")
+        importer = TableImporter(config)
+        db = DBAdapter(config, importer)
+        assignments = db.read_assignments()
+
+        # Get informatino from databased here
+        #assignmments = [] # Placeholder for the list of Tag Assignments from the database
+        self.write_to_csv(assignments, output_path)
+
 
     def write_to_csv(
             self, 
