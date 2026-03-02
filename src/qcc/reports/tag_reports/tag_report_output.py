@@ -1,4 +1,4 @@
-"""Handles the output for the tag reports"""
+"""Outputs the csv file for the tag reports"""
 
 import csv 
 from typing import List
@@ -14,12 +14,8 @@ class TagReportOutput:
             output_path : str
                      ):
         
-        """Generates a CSV file of the inputted Tag Assignments"""
-
-        # Sorts the Tag Assignments by their comments and characteristics
         grouped_assignments = group_by_comment_and_characteristic(assignments)
 
-        # Table headers
         headers = [
         "comment_id", 
         "characteristic_id", 
@@ -28,9 +24,6 @@ class TagReportOutput:
         "num_no"
         ]
 
-        # Metrics will be added in the future
-
-        # Opens path and creates the CSV file
         with open(output_path, "w", newline="") as csvfile:
             writer = csv.writer(csvfile)
             writer.writerow(headers)
@@ -44,3 +37,11 @@ class TagReportOutput:
                 num_yes, num_no = count_yes_no(tag_list)
 
                 num_failed = num_taggers_asked - (num_yes + num_no)
+
+                writer.writerow([
+                    comment_id,
+                    characteristic_id,
+                    num_taggers_asked,
+                    num_yes,
+                    num_no
+                ])
