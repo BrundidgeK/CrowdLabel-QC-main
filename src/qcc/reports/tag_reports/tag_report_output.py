@@ -35,16 +35,21 @@ class TagReportOutput:
                      ):
         
         grouped_assignments = group_by_comment_and_characteristic(assignments)
+        
 
         headers = [
         "comment_id", 
         "characteristic_id", 
         "num_taggers_asked", 
         "num_yes", 
-        "num_no"
+        "num_no",
+        "num_failed",
+        "cohen_kappa",
+        "krippendorff_alpha"
         ]
 
         # Cohen's kappa + Krippendorff's alpha
+        from qcc.metrics.agreement_strategy import cohen_kappa, krippendorff_alpha
 
         with open(output_path, "w", newline="") as csvfile:
             writer = csv.writer(csvfile)
@@ -59,3 +64,17 @@ class TagReportOutput:
                 num_yes, num_no = count_yes_no(tag_list)
 
                 num_failed = num_taggers_asked - (num_yes + num_no)
+
+                kappa = cohen_kappa(tag_list)
+                alpha = krippendorff_alpha(tag_list)
+                
+                writer.writerow([
+                    comment_id, 
+                    characteristic_id, 
+                    num_taggers_asked, 
+                    num_yes, 
+                    num_no,
+                    num_failed,
+                    kappa,
+                    alpha
+                ])
