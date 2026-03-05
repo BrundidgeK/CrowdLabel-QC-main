@@ -19,6 +19,8 @@ class TagReportOutput:
         
         """Generates a CSV file from the SQL database of Tag Assignments"""
 
+        # grab from tagger
+
         config = MySQLConfig(host="localhost", user="root", password="password", database="expertiza_anonymization", port=3306)
         importer = TableImporter(config)
         db = DBAdapter(mysql_config=config, importer=importer)
@@ -32,6 +34,7 @@ class TagReportOutput:
     def write_to_csv(
             self, 
             assignments: List[TagAssignment],
+            # characteristic : str,
             output_path : str
                      ):
         
@@ -44,12 +47,12 @@ class TagReportOutput:
         "num_taggers_asked", 
         "num_yes", 
         "num_no",
-        "num_failed",
-        "cohen_kappa",
-        "krippendorff_alpha"
+        "num_skipped"
+        #"cohen_kappa",
+        #"krippendorff_alpha"
         ]
 
-        # Cohen's kappa + Krippendorff's alpha
+        # Tagger reliability ^^^
 
         with open(output_path, "w", newline="") as csvfile:
             writer = csv.writer(csvfile)
@@ -65,8 +68,9 @@ class TagReportOutput:
 
                 num_failed = num_taggers_asked - (num_yes + num_no)
 
-                kappa = label.cohens_kappa(tag_list, characteristic=characteristic_id)
-                alpha = label.krippendorff_alpha(tag_list, char=characteristic_id)
+                # Dw
+                #kappa = label.cohens_kappa(tag_list, characteristic=characteristic_id)
+                #alpha = label.krippendorff_alpha(tag_list, char=characteristic_id)
                 
                 writer.writerow([
                     comment_id, 
@@ -74,7 +78,7 @@ class TagReportOutput:
                     num_taggers_asked, 
                     num_yes, 
                     num_no,
-                    num_failed,
-                    kappa,
-                    alpha
+                    num_failed
+                    #kappa,
+                    #alpha
                 ])

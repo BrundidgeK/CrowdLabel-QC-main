@@ -25,7 +25,7 @@ class TestTagReportOutput:
         assert True
 
 
-    """def test_db_input(self):
+    def test_db_input(self):
         db_output = "/tests/data/tag_report_output.csv"
 
         os.makedirs(os.path.dirname(db_output), exist_ok=True)
@@ -36,4 +36,4 @@ class TestTagReportOutput:
             lines = f.readlines()
             assert len(lines) > 0, "CSV output file from database input is empty or only contains headers"
             assert "comment_id" in lines[0], "CSV output file from database input does not contain expected headers"
-    """
+    
