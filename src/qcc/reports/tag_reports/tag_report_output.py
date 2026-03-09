@@ -3,12 +3,15 @@
 import csv 
 from typing import List
 
-from qcc.reports.tagger_reports.tag_report import group_by_comment_and_characteristic, count_yes_no
+from qcc.reports.tagger_reports.tag_report import group_by_characteristic, count_yes_no
 from qcc.domain.tagassignment import TagAssignment
 from qcc.data_ingestion.mysql_config import MySQLConfig
 from qcc.data_ingestion.mysql_importer import TableImporter
 from src.qcc.io.db_adapter import DBAdapter
-from qcc.metrics.agreement_strategy import LatestLabelPercentAgreement
+
+from src.qcc.domain.characteristic_dictionary import CharacteristicDictionary
+
+#from qcc.metrics.agreement_strategy import LatestLabelPercentAgreement
 
 class TagReportOutput:
 
@@ -34,12 +37,13 @@ class TagReportOutput:
     def write_to_csv(
             self, 
             assignments: List[TagAssignment],
-            # characteristic : str,
+            character_id : int,
             output_path : str
                      ):
         
-        grouped_assignments = group_by_comment_and_characteristic(assignments)
-        label = LatestLabelPercentAgreement()
+        grouped_assignments = group_by_characteristic(assignments)
+        
+        #label = LatestLabelPercentAgreement()
 
         headers = [
         "comment_id", 
@@ -52,7 +56,7 @@ class TagReportOutput:
         #"krippendorff_alpha"
         ]
 
-        # Tagger reliability ^^^
+        char = CharacteristicDictionary.dictionary[id]
 
         with open(output_path, "w", newline="") as csvfile:
             writer = csv.writer(csvfile)
@@ -61,6 +65,11 @@ class TagReportOutput:
             # Sort for consistent output
             for key in sorted(grouped_assignments.keys()):
                 comment_id, characteristic_id = key
+
+                # Checks if current characteristic matches
+                if not char.__eq__(characteristic_id):
+                    continue
+
                 tag_list = grouped_assignments[key]
 
                 num_taggers_asked = len(tag_list)

@@ -50,6 +50,28 @@ def group_by_comment(assignments: List[TagAssignment]) -> Dict[str, List[TagAssi
 
     return dict(groups)
 
+def group_by_characteristic(assignments: List[TagAssignment]) -> Dict[str, List[TagAssignment]]:
+    """Group assignments by characteristic_id (string key).
+
+    This function focuses on IDs only — it will look for a ``characteristic_id``
+    attribute on the assignment and fall back to an enriched ``characteristic.id``
+    when available. Assignments missing any characteristic id are skipped.
+    """
+
+    groups: Dict[str, List[TagAssignment]] = defaultdict(list)
+
+    for assignment in assignments or []:
+        char_id = getattr(assignment, "characteristic_id", None)
+        if char_id is None:
+            char_obj = getattr(assignment, "characteristic", None)
+            char_id = getattr(char_obj, "id", None) if char_obj is not None else None
+
+        if char_id is None:
+            continue
+
+        groups[str(char_id)].append(assignment)
+
+    return dict(groups)
 
 def group_by_comment_and_characteristic(
     assignments: List[TagAssignment],
