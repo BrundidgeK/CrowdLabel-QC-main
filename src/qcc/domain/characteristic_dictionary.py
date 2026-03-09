@@ -1,5 +1,5 @@
 
-from characteristic import Characteristic
+from qcc.domain.characteristic import Characteristic
 from typing import Dict
 
 class CharacteristicDictionary:
