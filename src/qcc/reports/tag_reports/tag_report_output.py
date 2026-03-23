@@ -37,7 +37,7 @@ class TagReportOutput:
     def write_to_csv(
             self, 
             assignments: List[TagAssignment],
-            character_id : int,
+            id : int,
             output_path : str
                      ):
         
@@ -77,7 +77,6 @@ class TagReportOutput:
 
                 num_failed = num_taggers_asked - (num_yes + num_no)
 
-                # Dw
                 #kappa = label.cohens_kappa(tag_list, characteristic=characteristic_id)
                 #alpha = label.krippendorff_alpha(tag_list, char=characteristic_id)
                 
